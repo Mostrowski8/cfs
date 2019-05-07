@@ -23,16 +23,12 @@ function readsource (){
 
 function newdefault (src){
     fs.unlink("default.txt", (err)=>{
+        if (err) console.log(err);
         fs.writeFile("default.txt", src, "utf8", (err)=>{
             if (err) console.log(err);
         })
     });
-}
-
-async function cfs () {
-   let data = await readsource();
-    querries(data)
-}
+};
 
 function querries (data){rl.question('Retain default source path? y/n ', (aZero)=>{
     if (aZero==="y") {
@@ -47,8 +43,7 @@ function querries (data){rl.question('Retain default source path? y/n ', (aZero)
                     copyStuff(path.normalize(aOne));
                 }
                 
-            })
-            
+            })    
     })}
 })};
 
@@ -56,7 +51,7 @@ let options = {
     filter: function (path) {
         return path.indexOf('.txt') === -1
     }
-} 
+}; 
 
 function copyStuff(givenPath){
     rl.question('Enter project path > ', (aOne) => {
@@ -71,10 +66,14 @@ function copyStuff(givenPath){
                   console.log("success!");
                 }
               });
-
             rl.close();
         }) 
     });   
-}
+};
+
+async function cfs () {
+    let data = await readsource();
+     querries(data)
+ };
 
 cfs();

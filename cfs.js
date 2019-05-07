@@ -48,26 +48,43 @@ function querries(data) {
     })
 };
 
-let options = {
-    filter: function (path) {
-        return path.indexOf('.txt') === -1
-    }
+function getOptions () {
+    return new Promise((resolve, reject)=>{
+        fs.readFile("options.txt", "utf8", (err, data)=>{
+            if (err) {
+                console.log(err);
+                reject(err);
+            } else {
+                console.log(data);
+                let json = JSON.parse(data);
+                let filters = json.filters;
+                let retuned = {filter: function (path) {
+                    let check = filters.map((filter)=>path.indexOf(filter) === -1);
+                    if (check.indexOf(false) === -1) return true 
+                }}
+                resolve(retuned)
+            }
+        })
+    })  
 };
 
 function copyStuff(givenPath) {
     rl.question('Enter project path > ', (aOne) => {
-        rl.question('Enter project name > ', (aTwo) => {
+        rl.question('Enter project name > ', async (aTwo) => {
             let directory = path.parse(path.normalize(aOne));
             let filename = path.normalize(aTwo);
             let fulldir = path.normalize(path.join(path.format(directory), filename));
+            let options = await getOptions();
             fs.copy(givenPath, fulldir, options, function (err) {
                 if (err) {
                     console.error(err);
+                    rl.close();
                 } else {
                     console.log("success!");
+                    rl.close();
                 }
             });
-            rl.close();
+            
         })
     });
 };

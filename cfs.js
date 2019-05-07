@@ -23,12 +23,9 @@ function readsource() {
 };
 
 function newdefault(src) {
-    fs.unlink("default.txt", (err) => {
-        if (err) console.log(err);
         fs.writeFile("default.txt", src, "utf8", (err) => {
             if (err) console.log(err);
-        })
-    });
+        }); 
 };
 
 function querries(data) {

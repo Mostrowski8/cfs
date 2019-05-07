@@ -21,6 +21,14 @@ function readsource (){
     }) 
 };
 
+function newdefault (src){
+    fs.unlink("default.txt", (err)=>{
+        fs.writeFile("default.txt", src, "utf8", (err)=>{
+            if (err) console.log(err);
+        })
+    });
+}
+
 async function cfs () {
    let data = await readsource();
     querries(data)
@@ -31,7 +39,16 @@ function querries (data){rl.question('Retain default source path? y/n ', (aZero)
         copyStuff(path.normalize(data));
     } else {
         rl.question('Please provide new source path > ', (aOne) => {
-            copyStuff(path.normalize(aOne));
+            rl.question('Set this as new default? y/n> ', (aThree) => {
+                if (aThree==="y") {
+                    copyStuff(path.normalize(aOne));
+                    newdefault (aOne)
+                } else {
+                    copyStuff(path.normalize(aOne));
+                }
+                
+            })
+            
     })}
 })};
 

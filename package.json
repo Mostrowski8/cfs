@@ -1,0 +1,19 @@
+{
+  "name": "cfs",
+  "version": "1.0.0",
+  "description": "create folder structure task",
+  "main": "cfs.js",
+  "scripts": {
+    "test": "testcfs",
+    "start": "node cfs.js"
+  },
+  "keywords": [
+    "folder",
+    "structure"
+  ],
+  "author": "Marek Ostrowski",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^7.0.1"
+  }
+}

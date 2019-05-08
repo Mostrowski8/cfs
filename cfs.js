@@ -50,7 +50,7 @@ function querries(data) {
 
 function getOptions () {
     return new Promise((resolve, reject)=>{
-        fs.readFile("options.txt", "utf8", (err, data)=>{
+        fs.readFile("options.json", "utf8", (err, data)=>{
             if (err) {
                 console.log(err);
                 reject(err);

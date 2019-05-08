@@ -84,7 +84,7 @@ function copyStuff(givenPath) {
                     rl.prompt();
                     cfs()
                 } else {
-                    console.log("success!\n\n\");
+                    console.log("success!\n\n");
                     rl.prompt();
                     cfs()
                 }

@@ -4,8 +4,11 @@ const path = require('path');
 
 const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
+    prompt: '--start to copy or --help for info > \n'
 });
+
+rl.prompt();
 
 function readsource() {
     return new Promise((resolve, reject) => {
@@ -69,8 +72,8 @@ function getOptions () {
 };
 
 function copyStuff(givenPath) {
-    rl.question('Enter project path > ', (aOne) => {
-        rl.question('Enter project name > ', async (aTwo) => {
+    rl.question('Enter new project path > ', (aOne) => {
+        rl.question('Enter new project name > ', async (aTwo) => {
             let directory = path.parse(path.normalize(aOne));
             let filename = path.normalize(aTwo);
             let fulldir = path.normalize(path.join(path.format(directory), filename));
@@ -78,10 +81,12 @@ function copyStuff(givenPath) {
             fs.copy(givenPath, fulldir, options, function (err) {
                 if (err) {
                     console.error(err);
-                    rl.close();
+                    rl.prompt();
+                    cfs()
                 } else {
-                    console.log("success!");
-                    rl.close();
+                    console.log("success!\n\n\");
+                    rl.prompt();
+                    cfs()
                 }
             });
             
@@ -89,9 +94,25 @@ function copyStuff(givenPath) {
     });
 };
 
-async function cfs() {
-    let data = await readsource();
-    querries(data)
+function cfs() {
+    rl.on('line', async (line)=>{
+        switch (line.trim()) {
+            case '--start':
+                let data = await readsource();
+                querries(data);
+            break;
+            case '--help':
+                console.log ("\n\n\****\n\n\--start to begin copying\n\n\set filters in options.json file\n\n\default path is stored in default.txt\n\n****\n\n");
+            break;
+            default:
+                console.log ('Unrecognized input')
+            break;
+        }
+        rl.prompt();
+    }).on('close', ()=> {
+        console.log('Good bye!');
+        process.exit(0);
+    })
 };
 
 cfs();
